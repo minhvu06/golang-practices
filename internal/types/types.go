@@ -13,6 +13,11 @@ type RequestGetUserById struct {
 	Id string `path:"id"`
 }
 
+type RequestLogin struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
 type ResponseCreateUser struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
@@ -34,4 +39,17 @@ type ResponseGetUserByIdData struct {
 	Username  string `json:"username"`
 	Name      string `json:"name"`
 	CreatedAt string `json:"createdAt"`
+}
+
+type ResponseLogin struct {
+	Code    int                `json:"code"`
+	Message string             `json:"message"`
+	Data    *ResponseLoginData `json:"data,omitempty"`
+}
+
+type ResponseLoginData struct {
+	Id          string `json:"id"`
+	Username    string `json:"username"`
+	Name        string `json:"name"`
+	AccessToken string `json:"accessToken"`
 }

@@ -30,7 +30,7 @@ func NewGetUserByIdLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUs
 
 func (l *GetUserByIdLogic) GetUserById(req *types.RequestGetUserById) (resp *types.ResponseGetUserById, err error) {
 	if req.Id == "12345" {
-		panic(xerr.NewException(1001, "User not found"))
+		panic(xerr.NewException(404, "Người dùng không tồn tại"))
 	}
 
 	user := &types.ResponseGetUserByIdData{

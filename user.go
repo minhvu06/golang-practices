@@ -27,6 +27,7 @@ func main() {
 	server := rest.MustNewServer(c.RestConf)
 	defer server.Stop()
 
+	server.Use(xerr.JwtMiddleware)
 	server.Use(xerr.GlobalErrorMiddleware)
 
 	ctx := svc.NewServiceContext(c)

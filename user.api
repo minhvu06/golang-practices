@@ -1,5 +1,23 @@
 syntax = "v1"
 
+type ResponseLoginData {
+	Id          string `json:"id"`
+	Username    string `json:"username"`
+	Name        string `json:"name"`
+	AccessToken string `json:"accessToken"`
+}
+
+type ResponseLogin {
+	Code    int                `json:"code"`
+	Message string             `json:"message"`
+	Data    *ResponseLoginData `json:"data,omitempty"`
+}
+
+type RequestLogin {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
 type ResponseGetUserByIdData {
 	Id        string `json:"id"`
 	Username  string `json:"username"`
@@ -34,6 +52,9 @@ type ResponseException {
 }
 
 service user-api {
+	@handler Login
+	post /auth (RequestLogin) returns (ResponseLogin)
+
 	@handler GetUserByIdHandler
 	get /user/:id (RequestGetUserById) returns (ResponseGetUserById)
 
