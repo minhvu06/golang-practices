@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -36,8 +37,13 @@ func (m *UserModel) CreateUser(ctx context.Context, user *User) error {
 }
 
 func (m *UserModel) GetUserByID(ctx context.Context, id string) (*User, error) {
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return nil, err
+	}
+
 	var user User
-	err := m.collection.FindOne(ctx, bson.M{"_id": id}).Decode(&user)
+	err = m.collection.FindOne(ctx, bson.M{"_id": objectID}).Decode(&user)
 	if err != nil {
 		return nil, err
 	}

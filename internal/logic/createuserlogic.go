@@ -38,7 +38,7 @@ func (l *CreateUserLogic) CreateUser(req *types.RequestCreateUser) (resp *types.
 
 	hashedPwd, err := hashPassword(req.Password)
 	if err != nil {
-		panic(xerr.NewException(409, "Lỗi hệ thống"))
+		panic(xerr.NewException(409, "Lỗi xử lý hệ thống"))
 	}
 
 	user := &model.User{

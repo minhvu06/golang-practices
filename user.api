@@ -61,4 +61,3 @@ service user-api {
 	@handler CreateUserHandler
 	post /user (RequestCreateUser) returns (ResponseCreateUser)
 }
-

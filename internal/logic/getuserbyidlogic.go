@@ -5,7 +5,7 @@ package logic
 
 import (
 	"context"
-	"time"
+	"log"
 
 	"user-api/internal/svc"
 	"user-api/internal/types"
@@ -29,15 +29,19 @@ func NewGetUserByIdLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUs
 }
 
 func (l *GetUserByIdLogic) GetUserById(req *types.RequestGetUserById) (resp *types.ResponseGetUserById, err error) {
-	if req.Id == "12345" {
+	existingUser, _ := l.svcCtx.UserMod.GetUserByID(l.ctx, req.Id)
+
+	log.Println("User id: ", req.Id)
+
+	if existingUser == nil {
 		panic(xerr.NewException(404, "Người dùng không tồn tại"))
 	}
 
 	user := &types.ResponseGetUserByIdData{
-		Id:        req.Id,
-		Username:  "User",
-		Name:      "Người dùng",
-		CreatedAt: time.Now().UTC().String(),
+		Id:        existingUser.ID,
+		Username:  existingUser.Username,
+		Name:      existingUser.Name,
+		CreatedAt: existingUser.CreatedAt.String(),
 	}
 
 	return &types.ResponseGetUserById{

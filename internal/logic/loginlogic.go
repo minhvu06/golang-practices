@@ -12,6 +12,7 @@ import (
 	"user-api/internal/xerr"
 
 	"github.com/zeromicro/go-zero/core/logx"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type LoginLogic struct {
@@ -29,16 +30,22 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 }
 
 func (l *LoginLogic) Login(req *types.RequestLogin) (resp *types.ResponseLogin, err error) {
-	if req.Username != "vnm" || req.Password != "123456" {
+	existingUser, _ := l.svcCtx.UserMod.GetUserByUsername(l.ctx, req.Username)
+
+	if existingUser == nil {
 		panic(xerr.NewException(400, "Tài khoản hoặc mật khẩu không chính xác"))
 	}
 
-	accessToken, _ := helper.GenerateToken(req.Username)
+	if !verifyPassword(existingUser.Password, req.Password) {
+		panic(xerr.NewException(400, "Tài khoản hoặc mật khẩu không chính xác"))
+	}
+
+	accessToken, _ := helper.GenerateToken(existingUser.Username)
 
 	res := &types.ResponseLoginData{
-		Id:          req.Username,
-		Username:    req.Username,
-		Name:        req.Username,
+		Id:          existingUser.ID,
+		Username:    existingUser.Username,
+		Name:        existingUser.Name,
 		AccessToken: accessToken,
 	}
 
@@ -47,4 +54,9 @@ func (l *LoginLogic) Login(req *types.RequestLogin) (resp *types.ResponseLogin, 
 		Message: "Thành công",
 		Data:    res,
 	}, nil
+}
+
+func verifyPassword(hash, pwd string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(pwd))
+	return err == nil
 }
