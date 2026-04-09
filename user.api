@@ -1,0 +1,38 @@
+syntax = "v1"
+
+type ResponseGetUserByIdData {
+	Id        string `json:"id"`
+	Username  string `json:"username"`
+	Name      string `json:"name"`
+	CreatedAt string `json:"createdAt"`
+}
+
+type ResponseGetUserById {
+	Code    int                      `json:"code"`
+	Message string                   `json:"message"`
+	Data    *ResponseGetUserByIdData `json:"data,omitempty"`
+}
+
+type RequestGetUserById {
+	Id string `path:"id"`
+}
+
+type ResponseCreateUser {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+}
+
+type RequestCreateUser {
+	Username string `json:"username"`
+	Name     string `json:"name"`
+	Password string `json:"password"`
+}
+
+service user-api {
+	@handler GetUserByIdHandler
+	get /user/:id (RequestGetUserById) returns (ResponseGetUserById)
+
+	@handler CreateUserHandler
+	post /user (RequestCreateUser) returns (ResponseCreateUser)
+}
+
