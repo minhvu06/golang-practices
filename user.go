@@ -9,6 +9,7 @@ import (
 
 	"user-api/internal/config"
 	"user-api/internal/handler"
+	"user-api/internal/helper"
 	"user-api/internal/svc"
 	"user-api/internal/xerr"
 
@@ -23,6 +24,8 @@ func main() {
 
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
+
+	helper.InitJWT(c)
 
 	server := rest.MustNewServer(c.RestConf)
 	defer server.Stop()

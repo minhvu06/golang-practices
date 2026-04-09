@@ -2,6 +2,10 @@ Name: user-api
 Host: 0.0.0.0
 Port: 8888
 
+Jwt:
+  Secret: "4a0e7e164e6aae202ccffaeedaa99775"
+  Expired: 7
+
 Mongo:
   Uri: "mongodb://127.0.0.1:27017"
   Database: "users"

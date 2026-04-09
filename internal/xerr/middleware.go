@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strings"
 
+	"user-api/internal/helper"
 	"user-api/internal/types"
 
 	"github.com/golang-jwt/jwt/v4"
@@ -30,8 +31,6 @@ func GlobalErrorMiddleware(next http.HandlerFunc) http.HandlerFunc {
 }
 
 // JwtMiddleware kiểm tra xác thực
-var jwtSecret = []byte("my_secret_key")
-
 var skipPaths = map[string]bool{
 	"/auth":   true,
 	"/health": true,
@@ -58,7 +57,7 @@ func JwtMiddleware(next http.HandlerFunc) http.HandlerFunc {
 
 		tokenStr := parts[1]
 		token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
-			return jwtSecret, nil
+			return helper.GetSecret(), nil
 		})
 
 		if err != nil || !token.Valid {
