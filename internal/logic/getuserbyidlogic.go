@@ -5,9 +5,11 @@ package logic
 
 import (
 	"context"
+	"time"
 
 	"user-api/internal/svc"
 	"user-api/internal/types"
+	"user-api/internal/xerr"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -27,7 +29,20 @@ func NewGetUserByIdLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUs
 }
 
 func (l *GetUserByIdLogic) GetUserById(req *types.RequestGetUserById) (resp *types.ResponseGetUserById, err error) {
-	// todo: add your logic here and delete this line
+	if req.Id == "12345" {
+		panic(xerr.NewException(1001, "User not found"))
+	}
 
-	return
+	user := &types.ResponseGetUserByIdData{
+		Id:        req.Id,
+		Username:  "User",
+		Name:      "Người dùng",
+		CreatedAt: time.Now().UTC().String(),
+	}
+
+	return &types.ResponseGetUserById{
+		Code:    0,
+		Message: "Thành công",
+		Data:    user,
+	}, nil
 }

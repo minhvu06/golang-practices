@@ -28,6 +28,11 @@ type RequestCreateUser {
 	Password string `json:"password"`
 }
 
+type ResponseException {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+}
+
 service user-api {
 	@handler GetUserByIdHandler
 	get /user/:id (RequestGetUserById) returns (ResponseGetUserById)

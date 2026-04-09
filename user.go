@@ -10,6 +10,7 @@ import (
 	"user-api/internal/config"
 	"user-api/internal/handler"
 	"user-api/internal/svc"
+	"user-api/internal/xerr"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"
@@ -25,6 +26,8 @@ func main() {
 
 	server := rest.MustNewServer(c.RestConf)
 	defer server.Stop()
+
+	server.Use(xerr.GlobalErrorMiddleware)
 
 	ctx := svc.NewServiceContext(c)
 	handler.RegisterHandlers(server, ctx)

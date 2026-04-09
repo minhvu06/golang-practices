@@ -8,6 +8,7 @@ import (
 
 	"user-api/internal/svc"
 	"user-api/internal/types"
+	"user-api/internal/xerr"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -27,7 +28,12 @@ func NewCreateUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Create
 }
 
 func (l *CreateUserLogic) CreateUser(req *types.RequestCreateUser) (resp *types.ResponseCreateUser, err error) {
-	// todo: add your logic here and delete this line
+	if req.Username == "vnm" {
+		panic(xerr.NewException(400, "Tên tài khoản đã được sử dụng"))
+	}
 
-	return
+	return &types.ResponseCreateUser{
+		Code:    0,
+		Message: "Thành công",
+	}, nil
 }

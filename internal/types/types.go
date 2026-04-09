@@ -18,6 +18,11 @@ type ResponseCreateUser struct {
 	Message string `json:"message"`
 }
 
+type ResponseException struct {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+}
+
 type ResponseGetUserById struct {
 	Code    int                      `json:"code"`
 	Message string                   `json:"message"`
